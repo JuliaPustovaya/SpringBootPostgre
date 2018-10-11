@@ -20,6 +20,7 @@ public class ContactController {
 	public String getContacts (@RequestParam(value = "name", required = false, defaultValue = "World") String name, Model model) {
 		List<Contact> contacts = (List<Contact>) contactService.findAll();
 		model.addAttribute("contacts", contacts);
+		model.addAttribute("name", name);
 		return "getContacts";
 
 	}
