@@ -1,0 +1,2 @@
+DROP TABLE IF EXISTS cities;
+CREATE TABLE contacts(id serial PRIMARY KEY, name VARCHAR(100));
