@@ -2,6 +2,7 @@ package com.appliaction.exception;
 
 import java.util.Date;
 
+import com.appliaction.bean.RegexEcxeption;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -29,4 +30,10 @@ import com.appliaction.bean.ContactNotFindEcxeption;
 					request.getDescription(false));
 			return new ResponseEntity<>(exceptionResponse, HttpStatus.NOT_FOUND);
 		}
+	@ExceptionHandler(RegexEcxeption.class)
+	public final ResponseEntity<ExceptionResponse> handleUserNotFoundException(RegexEcxeption ex, WebRequest request) {
+		ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), ex.getMessage(),
+				request.getDescription(false));
+		return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
+	}
 }
