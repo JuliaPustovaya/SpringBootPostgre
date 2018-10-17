@@ -1,11 +1,9 @@
 package com.appliaction.controller;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,13 +18,16 @@ import com.appliaction.service.IContactService;
 public class ContactController {
 	@Autowired
 	IContactService contactService;
+	private static final String VALIDATION_REGEX = "[^<>\"]+$";
+
 
 	@RequestMapping("/contacts")
-	public String getContacts( @RequestParam(value = "nameFilter") String nameFilter, Model model) throws UnsupportedEncodingException {
-		String par = URLDecoder.decode(nameFilter, StandardCharsets.UTF_8.toString());
-		List<Contact> contacts = (List<Contact>) contactService.findAll(URLDecoder.decode(nameFilter, "UTF-8"));
+	public String getContacts(@Valid @Pattern(regexp = VALIDATION_REGEX) @RequestParam(value = "nameFilter") String nameFilter, Model model) {
+		//	String par = URLEncoder.encode(nameFilter,"UTF-8");
+		List<Contact> contacts = (List<Contact>) contactService.findAll(nameFilter);
 		model.addAttribute("contacts", contacts);
 		model.addAttribute("nameFilter", nameFilter);
 		return "getContacts";
 	}
 }
+
